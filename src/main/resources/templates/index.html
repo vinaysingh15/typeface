@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload and Listing</title>
+</head>
+<body>
+<h1>File Upload</h1>
+<form action="/api/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <button type="submit">Upload</button>
+</form>
+
+<h1>File Listing</h1>
+<ul id="file-list">
+</ul>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch("/api/files")
+            .then(response => response.json())
+            .then(data => populateFileListing(data))
+            .catch(error => console.error("Error fetching file listing:", error));
+    });
+
+
+    function populateFileListing(files) {
+        const fileListElement = document.getElementById("file-list");
+
+        files.forEach(file => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${file.name} - ${file.createdTime}`;
+            fileListElement.appendChild(listItem);
+        });
+    }
+
+</script>
+</body>
+</html>
